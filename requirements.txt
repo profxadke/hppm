@@ -1,2 +1,4 @@
-uvloop
+anyio[trio]
+asyncer
+typer
 httpx
