@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, typer
+import os, typer, stoyled
 from subprocess import Popen, PIPE
 from anyio import create_task_group
 from httpx import AsyncClient
@@ -9,11 +9,15 @@ from httpx import AsyncClient
 app = typer.Typer()
 
 
+def proc_init():
+    proc = Popen(stderr=PIPE, stdout=PIPE)
+
+
 async def fetch_data(url: str) -> None:
     async with AsyncClient() as client:
-        print(f"[*] Fetching: {url}")
+        print(stoyled.info(f"Fetching -> {url}"))
         response = await client.get(url)
-        print(f"[+] Response from {url}: {response.status_code}\t{response.json()}")
+        print(stoyled.good(f"Response from {url} -> {response.status_code}\t{response.json()}"))
         return response.json()  # Returning the response as JSON
 
 
@@ -27,7 +31,7 @@ async def fetch_repos() -> None:
         for url in repos:
             tg.start_soon(fetch_data, url)
 
-    print('[X] All tasks finished!')
+    print(stoyled.takenInput('SUCCESS -> All tasks finished!'))
 
 
 @app.command()

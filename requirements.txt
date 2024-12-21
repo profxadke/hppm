@@ -1,3 +1,4 @@
+stoyled
 anyio[trio]
 asyncer
 typer
